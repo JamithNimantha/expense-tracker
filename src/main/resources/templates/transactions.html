@@ -1,0 +1,106 @@
+<!DOCTYPE HTML>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{fragments/main_layout}">
+<head>
+    <title>Transactions</title>
+</head>
+<body>
+    <div layout:fragment="content" class="container mb-5">
+        <div class="row mb-5">
+            <div class="col">
+                <h2>Income</h2>
+                <hr/>
+                <form th:action="@{/income}" modelAttribute="incomeForm" method="post">
+                    <div class="form-group">
+                        <label>Description</label>:
+                        <input type="text" class="form-control" name="description" autofocus="autofocus" />
+                    </div>
+                    <div class="form-group">
+                        <label>Amount</label>:
+                        <input type="number" class="form-control" name="amount" min="1" step="any" />
+                    </div>
+                    <button type="submit" class="btn btn-success">Add</button>
+                </form>
+            </div>
+            <div class="col">
+                <h2>Outcome</h2>
+                <hr/>
+                <form th:action="@{/outcome}" modelAttribute="outcomeForm" method="post">
+                    <div class="form-group">
+                        <label>Description</label>:
+                        <input type="text" class="form-control" name="description" autofocus="autofocus" />
+                    </div>
+                    <div class="form-group">
+                        <label>Amount</label>:
+                        <input type="number" class="form-control" name="amount" min="1" step="any" />
+                    </div>
+                    <button type="submit" class="btn btn-danger">Add</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="row mb-1 ">
+            <div class="col-11 p-0">
+                <form th:action="@{/search}" modelAttribute="incomeForm" method="get">
+                    <div class="input-group">
+                        <input th:value="${param.query}" type="text" class="form-control" name="query" placeholder="Type something to search..." />
+
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-outline-info">Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-1 p-0 d-flex">
+               <div class="dropdown ml-auto">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Filters
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" th:href="@{/transactions}">All</a>
+                        <a class="dropdown-item" th:href="@{/transactions(filter='Income')}">Incomes</a>
+                        <a class="dropdown-item" th:href="@{/transactions(filter='Outcome')}">Outcomes</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-1">
+            <div class="col-12 p-0" th:if="${param.query} and ${transactions.isEmpty()}">
+                <div class="alert alert-info">
+                    Nothing found, try searching different keyword.
+                </div>
+            </div>
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Created At</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Amount</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="transaction: ${transactions}">
+                        <td th:text="${transaction.getId()}" />
+                        <td th:text="${transaction.getCreatedAt()}" />
+                        <td th:text="${transaction.getDescription()}" />
+                        <td th:if="${transaction.getAmount() > 0}" class="text-success" th:text="${transaction.getAmount()}" />
+                        <td th:if="${transaction.getAmount() < 0}" class="text-danger" th:text="${transaction.getAmount()}" />
+                        <td><a th:href="@{/delete/{id}(id=${transaction.id})}" class="btn btn-danger"><i class="fa fa-trash-o fa-lg"></i></a></td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="3">Total :</th>
+                        <td th:if="${sum > 0}" class="text-white bg-success" th:text="${sum}" />
+                        <td th:if="${sum < 0}" class="text-white bg-danger" th:text="${sum}" />
+                        <td th:if="${sum == 0}" class="text-white bg-info" th:text="${sum}" />
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
