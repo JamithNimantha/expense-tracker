@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lk.ac.iit.asd.grp15.expensetracker.enums.TransactionType;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -33,6 +34,7 @@ public class Transaction {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable=false, name = "transaction_date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date transactionDate;
 
     @Temporal(TemporalType.TIMESTAMP)
