@@ -3,7 +3,7 @@ package lk.ac.iit.asd.grp15.expensetracker.controllers;
 
 import lk.ac.iit.asd.grp15.expensetracker.services.ISecurityService;
 import lk.ac.iit.asd.grp15.expensetracker.services.IUserService;
-import lk.ac.iit.asd.grp15.expensetracker.models.User;
+import lk.ac.iit.asd.grp15.expensetracker.entity.User;
 import lk.ac.iit.asd.grp15.expensetracker.validators.UserValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

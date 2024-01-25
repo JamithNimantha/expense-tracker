@@ -1,7 +1,7 @@
 package lk.ac.iit.asd.grp15.expensetracker.services.imp;
 
 
-import lk.ac.iit.asd.grp15.expensetracker.models.User;
+import lk.ac.iit.asd.grp15.expensetracker.entity.User;
 import lk.ac.iit.asd.grp15.expensetracker.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;

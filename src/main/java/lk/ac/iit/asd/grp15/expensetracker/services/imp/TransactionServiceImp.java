@@ -1,7 +1,7 @@
 package lk.ac.iit.asd.grp15.expensetracker.services.imp;
 
 
-import lk.ac.iit.asd.grp15.expensetracker.models.Transaction;
+import lk.ac.iit.asd.grp15.expensetracker.entity.Transaction;
 import lk.ac.iit.asd.grp15.expensetracker.repositories.TransactionRepository;
 import lk.ac.iit.asd.grp15.expensetracker.services.ITransactionService;
 import org.springframework.beans.factory.annotation.Autowired;

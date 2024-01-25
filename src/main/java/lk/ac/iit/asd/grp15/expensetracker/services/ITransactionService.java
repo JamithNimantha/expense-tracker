@@ -1,6 +1,6 @@
 package lk.ac.iit.asd.grp15.expensetracker.services;
 
-import lk.ac.iit.asd.grp15.expensetracker.models.Transaction;
+import lk.ac.iit.asd.grp15.expensetracker.entity.Transaction;
 import java.math.BigDecimal;
 import java.util.List;
 

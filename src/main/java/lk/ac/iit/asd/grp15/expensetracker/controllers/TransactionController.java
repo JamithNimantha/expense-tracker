@@ -3,7 +3,7 @@ package lk.ac.iit.asd.grp15.expensetracker.controllers;
 
 import lk.ac.iit.asd.grp15.expensetracker.enums.TransactionType;
 import lk.ac.iit.asd.grp15.expensetracker.factories.FilterFactory;
-import lk.ac.iit.asd.grp15.expensetracker.models.Transaction;
+import lk.ac.iit.asd.grp15.expensetracker.entity.Transaction;
 import lk.ac.iit.asd.grp15.expensetracker.services.imp.TransactionServiceImp;
 import lk.ac.iit.asd.grp15.expensetracker.services.imp.UserServiceImp;
 import lombok.RequiredArgsConstructor;
@@ -45,9 +45,9 @@ public class TransactionController {
 
     @PostMapping("/income")
     public String income(@AuthenticationPrincipal UserDetails userDetails, @ModelAttribute("incomeForm") Transaction incomeForm, BindingResult bindingResult) {
-        incomeForm.setUser(userService.findByUsername(userDetails.getUsername()));
+//        incomeForm.setUser(userService.findByUsername(userDetails.getUsername()));
         incomeForm.setType(TransactionType.INCOME);
-        incomeForm.setCreatedAt(new Date());
+        incomeForm.setTransactionDate(new Date());
         transactionService.save(incomeForm);
 
         return "redirect:/transactions";
@@ -55,9 +55,9 @@ public class TransactionController {
 
     @PostMapping("/outcome")
     public String outcome(@AuthenticationPrincipal UserDetails userDetails, @ModelAttribute("outcomeForm") Transaction outcomeForm, BindingResult bindingResult) {
-        outcomeForm.setUser(userService.findByUsername(userDetails.getUsername()));
+//        outcomeForm.setUser(userService.findByUsername(userDetails.getUsername()));
         outcomeForm.setType(TransactionType.EXPENSE);
-        outcomeForm.setCreatedAt(new Date());
+        outcomeForm.setTransactionDate(new Date());
         transactionService.save(outcomeForm);
 
         return "redirect:/transactions";
