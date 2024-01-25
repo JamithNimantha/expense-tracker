@@ -2,6 +2,27 @@
 <html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{fragments/main_layout}">
 <head>
     <title>Transactions</title>
+    <script>
+        function saveTransaction() {
+            if($('#type').val() == 'INCOME'){
+                $('#iCat').val($('#cat').val());
+                $('#iDate').val($('#date').val());
+                $('#iAmount').val($('#amount').val());
+                $('#iDescription').val($('#description').val());
+                $("#iTransactionForm").submit();
+            }else{
+                $('#oCat').val($('#cat').val());
+                $('#oDate').val($('#date').val());
+                $('#oAmount').val($('#amount').val());
+                $('#oDescription').val($('#description').val());
+                $("#oTransactionForm").submit();
+            }
+        }
+
+        $(window).on('load', function (){
+            document.getElementById('date').valueAsDate = new Date();
+        });
+    </script>
 </head>
 <body>
     <div layout:fragment="content" class="container mb-5">
@@ -9,33 +30,49 @@
             <div class="col">
                 <h2>Income</h2>
                 <hr/>
-                <form th:action="@{/income}" modelAttribute="incomeForm" method="post">
+                <div>
                     <div class="form-group">
-                        <label>Description</label>:
-                        <input type="text" class="form-control" name="description" autofocus="autofocus" />
+                        <label>Type</label>:
+                        <select class="form-select form-control" id="type" aria-label="Select Type">
+                            <option value="INCOME" selected>Income</option>
+                            <option value="EXPENSE">Expense</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Date</label>:
+                        <input type="date" class="form-control" id="date" autofocus="autofocus" />
+                    </div>
+                    <div class="form-group">
+                        <label>Category</label>:
+                        <select class="form-select form-control" id="cat" aria-label="Select Category">
+                            <option value="1" selected>Cat 01</option>
+                            <option value="2">Cat 02</option>
+                            <option value="3">Cat 03</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label>Amount</label>:
-                        <input type="number" class="form-control" name="amount" min="1" step="any" />
+                        <input type="number" class="form-control" id="amount" autofocus="autofocus" />
                     </div>
-                    <button type="submit" class="btn btn-success">Add</button>
-                </form>
-            </div>
-            <div class="col">
-                <h2>Outcome</h2>
-                <hr/>
-                <form th:action="@{/outcome}" modelAttribute="outcomeForm" method="post">
                     <div class="form-group">
                         <label>Description</label>:
-                        <input type="text" class="form-control" name="description" autofocus="autofocus" />
+                        <input type="text" class="form-control" id="description" autofocus="autofocus" />
                     </div>
-                    <div class="form-group">
-                        <label>Amount</label>:
-                        <input type="number" class="form-control" name="amount" min="1" step="any" />
-                    </div>
-                    <button type="submit" class="btn btn-danger">Add</button>
-                </form>
+                    <button type="button" class="btn btn-success" onclick="saveTransaction()">Save</button>
+                </div>
             </div>
+            <form id="iTransactionForm" style="display: none" hidden="hidden" th:action="@{/income}" modelAttribute="incomeForm" method="POST">
+                <input name="category" id="iCat" />
+                <input name="transactionDate" id="iDate" />
+                <input name="amount" id="iAmount" />
+                <input name="description" id="iDescription" />
+            </form>
+            <form id="oTransactionForm" style="display: none" hidden="hidden" th:action="@{/outcome}" modelAttribute="outcomeForm" method="POST">
+                <input name="category" id="oCat" />
+                <input name="transactionDate" id="oDate" />
+                <input name="amount" id="oAmount" />
+                <input name="description" id="oDescription" />
+            </form>
         </div>
 
         <div class="row mb-1 ">
