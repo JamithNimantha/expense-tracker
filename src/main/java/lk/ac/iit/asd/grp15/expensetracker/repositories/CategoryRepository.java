@@ -11,4 +11,6 @@ import java.util.List;
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     List<Category> findAllByCreatedBy(String username);
+
+    Category findByName(String name);
 }

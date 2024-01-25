@@ -14,10 +14,6 @@ import java.util.Set;
 @Setter
 @ToString
 public class User extends EntityAudit{
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Column(name="id")
-//    private Long id;
 
     @Id
     @Column(nullable=false, unique = true)

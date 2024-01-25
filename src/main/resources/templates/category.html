@@ -1,0 +1,109 @@
+<!DOCTYPE HTML>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{fragments/main_layout}">
+<head>
+    <title>Categories</title>
+    <script>
+        $(document).ready(function() {
+            $('#editModal').on('show.bs.modal', function (event) {
+                const button = $(event.relatedTarget);
+                const id = button.data('id');
+                const name = button.data('name');
+                const description = button.data('description');
+
+                console.log(id, name, description);
+                const modal = $(this);
+                modal.find('#editId').val(id);
+                modal.find('#editName').val(name);
+                modal.find('#editDescription').val(description);
+                console.log(modal.find('#editId').val());
+            });
+        });
+    </script>
+</head>
+<body>
+<div layout:fragment="content" class="container mb-5">
+    <div class="row mb-5">
+        <div class="col">
+            <h2>Category</h2>
+            <hr/>
+            <form th:action="@{/category}" modelAttribute="categoryForm" method="post">
+                <div class="form-group">
+                    <label>Name</label>:
+                    <input type="text" class="form-control" name="name" autofocus="autofocus"/>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>:
+                    <input type="text" class="form-control" name="description"/>
+                </div>
+                <button type="submit" class="btn btn-success">Save</button>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="row mb-1">
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="category: ${categories}">
+                <td th:text="${category.getId()}"/>
+                <td th:text="${category.getName()}"/>
+                <td th:text="${category.getDescription()}"/>
+                <td>
+                    <button class="btn btn-success" data-toggle="modal" data-target="#editModal"
+                            th:data-id="${category.id}"
+                            th:data-name="${category.name}"
+                            th:data-description="${category.description}">
+                        <i class="fa fa-pencil-square-o fa-lg"></i>
+                    </button>
+                </td>
+                <td>
+                    <a th:href="@{/category/delete/{id}(id=${category.id})}" class="btn btn-danger"><i
+                        class="fa fa-trash-o fa-lg"></i></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Edit Category</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="editForm" th:action="@{/category}" method="post">
+                        <input type="hidden" id="editId" name="id" />
+                        <div class="form-group">
+                            <label for="editName">Name</label>
+                            <input type="text" class="form-control" id="editName" name="name" />
+                        </div>
+                        <div class="form-group">
+                            <label for="editDescription">Description</label>
+                            <input type="text" class="form-control" id="editDescription" name="description" />
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" form="editForm" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

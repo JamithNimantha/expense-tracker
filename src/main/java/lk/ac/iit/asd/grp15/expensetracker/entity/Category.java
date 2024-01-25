@@ -1,10 +1,13 @@
 package lk.ac.iit.asd.grp15.expensetracker.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.Date;
 
 /**
  * @author Jamith Nimantha
@@ -22,8 +25,10 @@ public class Category extends EntityAudit{
     private Long id;
 
     @Column(nullable=false)
+    @NotEmpty(message = "Name can not be empty")
     private String name;
 
     @Column(nullable=false)
+    @NotEmpty(message = "Description can not be empty")
     private String description;
 }

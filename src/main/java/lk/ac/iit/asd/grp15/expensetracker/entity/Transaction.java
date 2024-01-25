@@ -28,6 +28,9 @@ public class Transaction extends EntityAudit{
     @Enumerated(EnumType.STRING)
     private TransactionType type;
 
+    @Column(nullable=false, name = "recurring")
+    private boolean recurring;
+
     @Column(nullable=false, name = "amount")
     private BigDecimal amount;
 
@@ -35,10 +38,9 @@ public class Transaction extends EntityAudit{
     @Column(nullable=false, name = "transaction_date")
     private Date transactionDate;
 
-//    @Temporal(TemporalType.TIMESTAMP)
-//    @Column(nullable=false, name = "created_at")
-//    @CreatedDate
-//    private Date createdAt;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     public BigDecimal getAmount() {
         if(this.type == TransactionType.EXPENSE) {
