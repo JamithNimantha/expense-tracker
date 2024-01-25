@@ -5,6 +5,10 @@
             <div class="navbar-header">
                 <a class="navbar-brand" href="#">Expense Tracker</a>
             </div>
+            <div class="navbar-brand nav navbar-nav ml-auto">
+                <li class="nav-item mx-1" sec:authorize="isAuthenticated()"><a th:href="@{/transactions}">Transactions</a></li>
+                <li class="nav-item mx-1" sec:authorize="isAuthenticated()"><a th:href="@{/category}">Category</a></li>
+            </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav ml-auto">
                     <div sec:authorize="isAuthenticated()" style="display: none;">

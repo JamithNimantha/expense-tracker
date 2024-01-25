@@ -3,7 +3,7 @@ package lk.ac.iit.asd.grp15.expensetracker.filters;
 
 import lk.ac.iit.asd.grp15.expensetracker.enums.TransactionType;
 import lk.ac.iit.asd.grp15.expensetracker.interfaces.ICriteria;
-import lk.ac.iit.asd.grp15.expensetracker.models.Transaction;
+import lk.ac.iit.asd.grp15.expensetracker.entity.Transaction;
 
 import java.util.List;
 

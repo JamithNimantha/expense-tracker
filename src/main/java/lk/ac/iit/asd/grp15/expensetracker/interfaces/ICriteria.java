@@ -1,7 +1,7 @@
 package lk.ac.iit.asd.grp15.expensetracker.interfaces;
 
 
-import lk.ac.iit.asd.grp15.expensetracker.models.Transaction;
+import lk.ac.iit.asd.grp15.expensetracker.entity.Transaction;
 
 import java.util.List;
 

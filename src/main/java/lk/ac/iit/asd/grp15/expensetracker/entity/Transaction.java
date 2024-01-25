@@ -1,10 +1,11 @@
-package lk.ac.iit.asd.grp15.expensetracker.models;
+package lk.ac.iit.asd.grp15.expensetracker.entity;
 
 import jakarta.persistence.*;
 import lk.ac.iit.asd.grp15.expensetracker.enums.TransactionType;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -15,8 +16,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
-public class Transaction {
+public class Transaction extends EntityAudit{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,9 +25,12 @@ public class Transaction {
     @Column(nullable=false, name = "description")
     private String description;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "type" )
+    @Enumerated(EnumType.STRING)
     private TransactionType type;
+
+    @Column(nullable=false, name = "recurring")
+    private boolean recurring;
 
     @Column(nullable=false, name = "amount")
     private BigDecimal amount;
@@ -37,20 +40,15 @@ public class Transaction {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date transactionDate;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable=false, name = "created_at")
-    private Date createdAt;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    @ToString.Exclude
-    private User user;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     public BigDecimal getAmount() {
-        if(type == TransactionType.EXPENSE) {
-            return amount.multiply(BigDecimal.valueOf(-1));
+        if(this.type == TransactionType.EXPENSE) {
+            return this.amount.negate();
         }
-        return amount;
+        return this.amount;
     }
 
     @Override

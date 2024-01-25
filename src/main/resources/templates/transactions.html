@@ -121,7 +121,7 @@
                 <tbody>
                     <tr th:each="transaction: ${transactions}">
                         <td th:text="${transaction.getId()}" />
-                        <td th:text="${transaction.getCreatedAt()}" />
+                        <td th:text="${transaction.getModifiedDate()}" />
                         <td th:text="${transaction.getDescription()}" />
                         <td th:if="${transaction.getAmount() > 0}" class="text-success" th:text="${transaction.getAmount()}" />
                         <td th:if="${transaction.getAmount() < 0}" class="text-danger" th:text="${transaction.getAmount()}" />
