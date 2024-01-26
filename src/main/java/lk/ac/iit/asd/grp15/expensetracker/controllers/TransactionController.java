@@ -48,6 +48,8 @@ public class TransactionController {
 //        incomeForm.setUser(userService.findByUsername(userDetails.getUsername()));
         incomeForm.setType(TransactionType.INCOME);
         incomeForm.setTransactionDate(new Date());
+        if (incomeForm.getId() == -1)
+            incomeForm.setId(null);
         transactionService.save(incomeForm);
 
         return "redirect:/transactions";
@@ -58,6 +60,8 @@ public class TransactionController {
 //        outcomeForm.setUser(userService.findByUsername(userDetails.getUsername()));
         outcomeForm.setType(TransactionType.EXPENSE);
         outcomeForm.setTransactionDate(new Date());
+        if (outcomeForm.getId() == -1)
+            outcomeForm.setId(null);
         transactionService.save(outcomeForm);
 
         return "redirect:/transactions";
