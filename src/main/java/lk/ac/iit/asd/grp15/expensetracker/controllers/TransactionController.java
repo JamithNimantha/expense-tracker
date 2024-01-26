@@ -53,6 +53,8 @@ public class TransactionController {
     @PostMapping("/transactions/income")
     public String income(@AuthenticationPrincipal UserDetails userDetails, @ModelAttribute("incomeForm") Transaction incomeForm, BindingResult bindingResult) {
         incomeForm.setType(TransactionType.INCOME);
+        if (incomeForm.getId() == -1)
+            incomeForm.setId(null);
         transactionService.save(incomeForm);
 
         return "redirect:/transactions";
@@ -62,6 +64,9 @@ public class TransactionController {
     @PostMapping("/transactions/outcome")
     public String outcome(@AuthenticationPrincipal UserDetails userDetails, @ModelAttribute("outcomeForm") Transaction outcomeForm, BindingResult bindingResult) {
         outcomeForm.setType(TransactionType.EXPENSE);
+        outcomeForm.setTransactionDate(new Date());
+        if (outcomeForm.getId() == -1)
+            outcomeForm.setId(null);
         transactionService.save(outcomeForm);
 
         return "redirect:/transactions";

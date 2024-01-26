@@ -23,9 +23,17 @@
             }
         }
 
-        // $(window).on('load', function (){
-        //     document.getElementById('date').valueAsDate = new Date();
-        // });
+        function editTransaction(id, type, catId, transactionDate, amount, description) {
+            $('#type').val(type)
+            $('#cat').val(catId);
+            $('#date').val(transactionDate.split(" ")[0]);
+            $('#amount').val(amount < 0 ? amount * -1 : amount);
+            $('#description').val(description);
+            if (type == 'INCOME')
+                $('#iId').val(id);
+            else
+                $('#oId').val(id);
+        }
     </script>
 </head>
 <body>
@@ -71,9 +79,11 @@
                         <input type="text" class="form-control" id="description" autofocus="autofocus" />
                     </div>
                     <button type="button" class="btn btn-success" onclick="saveTransaction()">Save</button>
+                    <button type="button" class="btn btn-light" onclick="location.reload()">Reset</button>
                 </div>
             </div>
             <form id="iTransactionForm" style="display: none" hidden="hidden" th:action="@{/transactions/income}" modelAttribute="incomeForm" method="POST">
+                <input name="id" id="iId" value="-1"/>
                 <input name="category" id="iCat" />
                 <input name="transactionDate" id="iDate" />
                 <input name="amount" id="iAmount" />
@@ -81,6 +91,7 @@
                 <input name="description" id="iDescription" />
             </form>
             <form id="oTransactionForm" style="display: none" hidden="hidden" th:action="@{/transactions/outcome}" modelAttribute="outcomeForm" method="POST">
+                <input name="id" id="oId" value="-1"/>
                 <input name="category" id="oCat" />
                 <input name="transactionDate" id="oDate" />
                 <input name="amount" id="oAmount" />
@@ -141,7 +152,19 @@
                         <td th:text="${transaction.getCategory().getName()}" />
                         <td th:if="${transaction.getAmount() > 0}" class="text-success" th:text="${transaction.getAmount()}" />
                         <td th:if="${transaction.getAmount() < 0}" class="text-danger" th:text="${transaction.getAmount()}" />
-                        <td><a th:href="@{/transactions/delete/{id}(id=${transaction.id})}" class="btn btn-danger"><i class="fa fa-trash-o fa-lg"></i></a></td>
+<!--                        <td><a th:href="@{/transactions/delete/{id}(id=${transaction.id})}" class="btn btn-danger"><i class="fa fa-trash-o fa-lg"></i></a></td>-->
+                        <td>
+                            <btn th:attr="onclick='editTransaction('
+                             + ${transaction.getId()} + ','
+                             + '\'' + ${transaction.getType().toString()} + '\','
+                             + ${transaction.getCategory().getId()} + ','
+                             + '\'' + ${transaction.getTransactionDate()} + '\','
+                             + ${transaction.getAmount()} + ','
+                             + '\'' + ${transaction.getDescription()} + '\')'" class="btn btn-light">
+                                <i class="fa fa-edit fa-lg"></i>
+                            </btn>
+                            <a th:href="@{/transactions/delete/{id}(id=${transaction.id})}" class="btn btn-danger"><i class="fa fa-trash-o fa-lg"></i></a>
+                        </td>
                     </tr>
                 </tbody>
                 <tfoot>
