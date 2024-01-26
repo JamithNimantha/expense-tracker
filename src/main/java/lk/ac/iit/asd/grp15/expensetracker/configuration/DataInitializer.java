@@ -39,6 +39,7 @@ public class DataInitializer implements CommandLineRunner {
             User user = new User();
             user.setUsername("admin");
             user.setPassword("admin");
+            user.setPasswordConfirm("admin");
             user.setCreatedBy("admin");
             user.setModifiedBy("admin");
             user.setCreatedDate(new Date());

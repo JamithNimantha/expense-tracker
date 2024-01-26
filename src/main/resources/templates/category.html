@@ -10,14 +10,35 @@
                 const name = button.data('name');
                 const description = button.data('description');
 
-                console.log(id, name, description);
                 const modal = $(this);
                 modal.find('#editId').val(id);
                 modal.find('#editName').val(name);
                 modal.find('#editDescription').val(description);
-                console.log(modal.find('#editId').val());
             });
         });
+
+        function edit(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            const button = $(event.relatedTarget);
+            const id = button.data('id');
+            const name = button.data('name');
+            const description = button.data('description');
+
+            $('#id').val(id);
+            $('#name').val(name);
+            $('#description').val(description);
+
+        }
+
+        function clearFields(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            $('#id').val('');
+            $('#name').val('');
+            $('#description').val('');
+        }
+
     </script>
 </head>
 <body>
@@ -27,15 +48,18 @@
             <h2>Category</h2>
             <hr/>
             <form th:action="@{/category}" modelAttribute="categoryForm" method="post">
+                <input type="hidden" id="id" name="id" />
                 <div class="form-group">
                     <label>Name</label>:
-                    <input type="text" class="form-control" name="name" autofocus="autofocus"/>
+                    <input type="text" id="name" class="form-control" name="name" autofocus="autofocus"/>
                 </div>
                 <div class="form-group">
                     <label>Description</label>:
-                    <input type="text" class="form-control" name="description"/>
+                    <input type="text"  id="description" class="form-control" name="description"/>
                 </div>
                 <button type="submit" class="btn btn-success">Save</button>
+                <button type="button" class="btn btn-danger" onclick="clearFields(event)">Clear</button>
+
             </form>
         </div>
     </div>

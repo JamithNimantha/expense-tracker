@@ -4,16 +4,17 @@ package lk.ac.iit.asd.grp15.expensetracker.services.imp;
 import lk.ac.iit.asd.grp15.expensetracker.entity.Transaction;
 import lk.ac.iit.asd.grp15.expensetracker.repositories.TransactionRepository;
 import lk.ac.iit.asd.grp15.expensetracker.services.ITransactionService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class TransactionServiceImp implements ITransactionService {
-    @Autowired
-    private TransactionRepository transactionRepository;
+    private final TransactionRepository transactionRepository;
 
     @Override
     public void save(Transaction transaction) {
@@ -27,12 +28,18 @@ public class TransactionServiceImp implements ITransactionService {
 
     @Override
     public List<Transaction> findByDescriptionContaining(String username, String query) {
-        return transactionRepository.findByDescriptionContaining(username, query);
+        return transactionRepository.findByDescriptionContaining(username, query)
+                .stream()
+                .sorted(Comparator.comparing(Transaction::getTransactionDate).reversed())
+                .toList();
     }
 
     @Override
     public List<Transaction> findByUsername(String username) {
-        return transactionRepository.findByUsername(username);
+        return transactionRepository.findByUsername(username)
+                .stream()
+                .sorted(Comparator.comparing(Transaction::getTransactionDate).reversed())
+                .toList();
     }
 
     @Override

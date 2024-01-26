@@ -25,8 +25,7 @@ public class CategoryController {
     @GetMapping("")
     public String getCategoryPage(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         model.addAttribute("categoryForm", new Category());
-        model.addAttribute("categories", categoryService.findAll());
-
+        model.addAttribute("categories", categoryService.findAllByUser(userDetails.getUsername()));
         return "category";
     }
 

@@ -10,6 +10,6 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     @Query("select t from Transaction t where t.createdBy = :username")
     List<Transaction> findByUsername(String username);
 
-    @Query("select t from Transaction t inner join User where t.createdBy = :username and t.description like %:query% ")
+    @Query("select t from Transaction t where t.createdBy = :username and t.description like %:query% ")
     List<Transaction> findByDescriptionContaining(String username, String query);
 }

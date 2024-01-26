@@ -2,10 +2,11 @@ package lk.ac.iit.asd.grp15.expensetracker.entity;
 
 import jakarta.persistence.*;
 import lk.ac.iit.asd.grp15.expensetracker.enums.TransactionType;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.data.annotation.CreatedDate;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -41,7 +42,7 @@ public class Transaction extends EntityAudit{
     private Date transactionDate;
 
     @ManyToOne
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
     public BigDecimal getAmount() {

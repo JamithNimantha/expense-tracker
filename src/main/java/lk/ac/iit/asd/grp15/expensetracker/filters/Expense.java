@@ -8,7 +8,7 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
-public class Outcome implements ICriteria {
+public class Expense implements ICriteria {
     @Override
     public List<Transaction> meets(List<Transaction> transactions) {
         return transactions.stream().filter(transaction -> transaction.getType().equals(TransactionType.EXPENSE)).collect(toList());

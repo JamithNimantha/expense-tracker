@@ -9,50 +9,62 @@
                 $('#iDate').val($('#date').val());
                 $('#iAmount').val($('#amount').val());
                 $('#iDescription').val($('#description').val());
+                $('#iCategory').val($('#category').val());
+                $('#iRecurring').val($('#recurring').val());
                 $("#iTransactionForm").submit();
             }else{
                 $('#oCat').val($('#cat').val());
                 $('#oDate').val($('#date').val());
                 $('#oAmount').val($('#amount').val());
                 $('#oDescription').val($('#description').val());
+                $('#oCategory').val($('#category').val());
+                $('#ORecurring').val($('#recurring').val());
                 $("#oTransactionForm").submit();
             }
         }
 
-        $(window).on('load', function (){
-            document.getElementById('date').valueAsDate = new Date();
-        });
+        // $(window).on('load', function (){
+        //     document.getElementById('date').valueAsDate = new Date();
+        // });
     </script>
 </head>
 <body>
     <div layout:fragment="content" class="container mb-5">
         <div class="row mb-5">
             <div class="col">
-                <h2>Income</h2>
+                <h2>Transactions</h2>
                 <hr/>
                 <div>
                     <div class="form-group">
                         <label>Type</label>:
-                        <select class="form-select form-control" id="type" aria-label="Select Type">
-                            <option value="INCOME" selected>Income</option>
-                            <option value="EXPENSE">Expense</option>
+                        <select class="form-select form-control" id="type" aria-label="Select Transaction Type" th:field="*{types}">
+                            <option th:each="type : ${types}" th:value="${type}" th:text="${type}"></option>
                         </select>
                     </div>
+
                     <div class="form-group">
-                        <label>Date</label>:
-                        <input type="date" class="form-control" id="date" autofocus="autofocus" />
+                        <label for="date">Date</label>:
+                        <input type="date"
+                               class="form-control"
+                               id="date"
+                               autofocus="autofocus"
+                               th:value="${transactionDate.now()}"/>
                     </div>
                     <div class="form-group">
                         <label>Category</label>:
-                        <select class="form-select form-control" id="cat" aria-label="Select Category">
-                            <option value="1" selected>Cat 01</option>
-                            <option value="2">Cat 02</option>
-                            <option value="3">Cat 03</option>
+                        <select class="form-select form-control" id="cat" aria-label="Select Category" th:field="*{categories}">
+                            <option th:each="category : ${categories}" th:value="${category.getId()}" th:text="${category.name}"></option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label>Amount</label>:
-                        <input type="number" class="form-control" id="amount" autofocus="autofocus" />
+                        <input type="number" class="form-control" id="amount" name="amount" autofocus="autofocus" />
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="recurring">
+                        <label class="form-check-label" for="recurring">
+                            Recurring
+                        </label>
                     </div>
                     <div class="form-group">
                         <label>Description</label>:
@@ -61,23 +73,25 @@
                     <button type="button" class="btn btn-success" onclick="saveTransaction()">Save</button>
                 </div>
             </div>
-            <form id="iTransactionForm" style="display: none" hidden="hidden" th:action="@{/income}" modelAttribute="incomeForm" method="POST">
+            <form id="iTransactionForm" style="display: none" hidden="hidden" th:action="@{/transactions/income}" modelAttribute="incomeForm" method="POST">
                 <input name="category" id="iCat" />
                 <input name="transactionDate" id="iDate" />
                 <input name="amount" id="iAmount" />
+                <input name="recurring" id="iRecurring" />
                 <input name="description" id="iDescription" />
             </form>
-            <form id="oTransactionForm" style="display: none" hidden="hidden" th:action="@{/outcome}" modelAttribute="outcomeForm" method="POST">
+            <form id="oTransactionForm" style="display: none" hidden="hidden" th:action="@{/transactions/outcome}" modelAttribute="outcomeForm" method="POST">
                 <input name="category" id="oCat" />
                 <input name="transactionDate" id="oDate" />
                 <input name="amount" id="oAmount" />
+                <input name="recurring" id="ORecurring" />
                 <input name="description" id="oDescription" />
             </form>
         </div>
 
         <div class="row mb-1 ">
             <div class="col-11 p-0">
-                <form th:action="@{/search}" modelAttribute="incomeForm" method="get">
+                <form th:action="@{/transactions/search}" modelAttribute="incomeForm" method="get">
                     <div class="input-group">
                         <input th:value="${param.query}" type="text" class="form-control" name="query" placeholder="Type something to search..." />
 
@@ -94,8 +108,8 @@
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <a class="dropdown-item" th:href="@{/transactions}">All</a>
-                        <a class="dropdown-item" th:href="@{/transactions(filter='Income')}">Incomes</a>
-                        <a class="dropdown-item" th:href="@{/transactions(filter='Outcome')}">Outcomes</a>
+                        <a class="dropdown-item" th:href="@{/transactions(filter='INCOME')}">Incomes</a>
+                        <a class="dropdown-item" th:href="@{/transactions(filter='EXPENSE')}">Outcomes</a>
                     </div>
                 </div>
             </div>
@@ -112,8 +126,9 @@
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Created At</th>
+                        <th scope="col">Transaction Date</th>
                         <th scope="col">Description</th>
+                        <th scope="col">Category</th>
                         <th scope="col">Amount</th>
                         <th scope="col"></th>
                     </tr>
@@ -121,16 +136,17 @@
                 <tbody>
                     <tr th:each="transaction: ${transactions}">
                         <td th:text="${transaction.getId()}" />
-                        <td th:text="${transaction.getModifiedDate()}" />
+                        <td th:text="${transaction.getTransactionDate()}" />
                         <td th:text="${transaction.getDescription()}" />
+                        <td th:text="${transaction.getCategory().getName()}" />
                         <td th:if="${transaction.getAmount() > 0}" class="text-success" th:text="${transaction.getAmount()}" />
                         <td th:if="${transaction.getAmount() < 0}" class="text-danger" th:text="${transaction.getAmount()}" />
-                        <td><a th:href="@{/delete/{id}(id=${transaction.id})}" class="btn btn-danger"><i class="fa fa-trash-o fa-lg"></i></a></td>
+                        <td><a th:href="@{/transactions/delete/{id}(id=${transaction.id})}" class="btn btn-danger"><i class="fa fa-trash-o fa-lg"></i></a></td>
                     </tr>
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th colspan="3">Total :</th>
+                        <th colspan="5">Total :</th>
                         <td th:if="${sum > 0}" class="text-white bg-success" th:text="${sum}" />
                         <td th:if="${sum < 0}" class="text-white bg-danger" th:text="${sum}" />
                         <td th:if="${sum == 0}" class="text-white bg-info" th:text="${sum}" />
