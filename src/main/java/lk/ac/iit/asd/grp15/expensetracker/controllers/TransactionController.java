@@ -64,7 +64,6 @@ public class TransactionController {
     @PostMapping("/transactions/outcome")
     public String outcome(@AuthenticationPrincipal UserDetails userDetails, @ModelAttribute("outcomeForm") Transaction outcomeForm, BindingResult bindingResult) {
         outcomeForm.setType(TransactionType.EXPENSE);
-        outcomeForm.setTransactionDate(new Date());
         if (outcomeForm.getId() == -1)
             outcomeForm.setId(null);
         transactionService.save(outcomeForm);

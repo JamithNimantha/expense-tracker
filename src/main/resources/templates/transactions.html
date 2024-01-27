@@ -147,7 +147,7 @@
                 <tbody>
                     <tr th:each="transaction: ${transactions}">
                         <td th:text="${transaction.getId()}" />
-                        <td th:text="${transaction.getTransactionDate()}" />
+                        <td th:text="${transaction.getTransactionDate().toString().split(' ')[0]}" />
                         <td th:text="${transaction.getDescription()}" />
                         <td th:text="${transaction.getCategory().getName()}" />
                         <td th:if="${transaction.getAmount() > 0}" class="text-success" th:text="${transaction.getAmount()}" />
@@ -169,7 +169,7 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th colspan="5">Total :</th>
+                        <th colspan="4">Total :</th>
                         <td th:if="${sum > 0}" class="text-white bg-success" th:text="${sum}" />
                         <td th:if="${sum < 0}" class="text-white bg-danger" th:text="${sum}" />
                         <td th:if="${sum == 0}" class="text-white bg-info" th:text="${sum}" />
